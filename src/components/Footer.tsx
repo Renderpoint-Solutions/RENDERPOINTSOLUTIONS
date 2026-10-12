@@ -1,161 +1,103 @@
-const links = ['Work', 'Services', 'Technology', 'About', 'Contact'];
+import PRLogo from './PRLogo';
+
+const navItems = [
+  { id: 'cover', label: 'Cover' },
+  { id: 'services', label: 'Services' },
+  { id: 'about', label: 'About' },
+  { id: 'work', label: 'Selected Work' },
+  { id: 'process', label: 'Process' },
+  { id: 'techstack', label: 'Tech Stack' },
+  { id: 'contact', label: 'Contact' },
+];
 
 export default function Footer() {
   const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <footer style={{
-      background: '#080808',
-      borderTop: '1px solid rgba(255,255,255,0.06)',
-      padding: '64px 40px 32px',
-    }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Top row */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr auto 1fr',
-          gap: '48px',
-          alignItems: 'start',
-          marginBottom: '64px',
-        }}>
-          {/* Brand + tagline */}
-          <div>
-            <div style={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 700,
-              fontSize: '20px',
-              color: '#f0f0f0',
-              letterSpacing: '-0.5px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              marginBottom: '12px',
-            }}>
-              <span style={{ color: '#00d4ff' }}>◆</span> Studio
+    <footer className="bg-slate-900 text-slate-300 py-16 px-4 md:px-8 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto">
+        {/* Main Footer Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
+          {/* Brand Info */}
+          <div className="md:col-span-5 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="bg-blue-600 p-2 rounded-xl text-white">
+                  <PRLogo size={24} color="#ffffff" />
+                </div>
+                <span className="font-extrabold text-xl text-white font-display tracking-tight">
+                  RENDERPOINT<span className="text-blue-400 font-normal text-xs ml-0.5">®</span>
+                </span>
+              </div>
+
+              <p className="text-slate-400 text-sm max-w-sm leading-relaxed mb-4">
+                A digital product studio engineering high-impact web apps, mobile solutions, & AI platforms for ambitious founders worldwide.
+              </p>
+
+              {/* Indian Script Tagline */}
+              <div className="indian-text text-sm font-semibold text-emerald-400">
+                വടിവமைப்பு • സാങ്കേതികവിദ്യ • ഡിജിറ്റൽ ലളിതത്വം
+              </div>
             </div>
-            <p style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              color: '#444',
-              lineHeight: 1.65,
-              maxWidth: '260px',
-              margin: 0,
-            }}>
-              Building digital experiences for ambitious ideas.
-            </p>
           </div>
 
-          {/* Nav */}
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-            {links.map((link) => (
-              <button
-                key={link}
-                onClick={() => scrollTo(link)}
-                style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#444',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '2px 0',
-                  letterSpacing: '0.01em',
-                  transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#888')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#444')}
-              >
-                {link}
-              </button>
-            ))}
-          </nav>
-
-          {/* Right — email + socials */}
-          <div style={{ textAlign: 'right' }}>
-            <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '10px',
-              letterSpacing: '0.1em',
-              color: '#333',
-              marginBottom: '6px',
-            }}>EMAIL</div>
-            <a
-              href="mailto:hello@yourstudio.com"
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#555',
-                textDecoration: 'none',
-                display: 'block',
-                marginBottom: '24px',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = '#00d4ff')}
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#555')}
-            >
-              hello@yourstudio.com
-            </a>
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
-              {['LinkedIn', 'Instagram', 'GitHub', 'Behance'].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: '#333',
-                    textDecoration: 'none',
-                    transition: 'color 0.2s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#888')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#333')}
-                >
-                  {s}
-                </a>
+          {/* Nav Links */}
+          <div className="md:col-span-3">
+            <div className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-4">
+              NAVIGATION
+            </div>
+            <ul className="space-y-2 text-sm font-medium">
+              {navItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    onClick={() => scrollTo(item.id)}
+                    className="hover:text-blue-400 transition-colors"
+                  >
+                    {item.label}
+                  </button>
+                </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Direct Contact */}
+          <div className="md:col-span-4 flex flex-col justify-between">
+            <div>
+              <div className="text-xs font-mono font-bold text-slate-500 uppercase tracking-wider mb-4">
+                INQUIRIES
+              </div>
+              <a
+                href="mailto:hello@renderpoint.com"
+                className="text-lg font-bold text-white hover:text-blue-400 transition-colors block mb-4"
+              >
+                hello@renderpoint.com
+              </a>
+              <div className="text-xs text-slate-400 mb-4">
+                Kochi & Bengaluru, India
+              </div>
+            </div>
+
+            <div className="flex gap-4 text-xs font-mono text-slate-400">
+              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-white transition-colors">GitHub</a>
+              <a href="#" className="hover:text-white transition-colors">Twitter</a>
+              <a href="#" className="hover:text-white transition-colors">Dribbble</a>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '24px' }} />
-
-        {/* Bottom row */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '12px',
-        }}>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px',
-            color: '#2e2e2e',
-          }}>
-            © 2026 Studio. All rights reserved.
-          </span>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px',
-            color: '#2e2e2e',
-          }}>
-            Design & development by Studio
-          </span>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4">
+          <div>
+            © 2026 RenderPoint Solutions. All rights reserved.
+          </div>
+          <div>
+            Built with React & Tailwind CSS • Folder Tab Portfolio Edition
+          </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          footer .footer-grid { grid-template-columns: 1fr !important; text-align: left !important; }
-          footer .footer-socials { justify-content: flex-start !important; }
-        }
-      `}</style>
     </footer>
   );
 }

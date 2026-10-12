@@ -1,5 +1,5 @@
-// PR Monogram Logo SVG Component
-// Derived from the brand logo: interlocked P and R in forest green
+// RenderPoint Solutions — Contained RP Monogram
+// Clean geometric mark inside a rounded square
 
 export default function PRLogo({ size = 40, color = '#1B5E20' }: { size?: number; color?: string }) {
   return (
@@ -10,22 +10,38 @@ export default function PRLogo({ size = 40, color = '#1B5E20' }: { size?: number
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ display: 'block' }}
+      aria-label="RenderPoint Solutions logo"
     >
-      {/* P letter */}
+      {/* Contained rounded square */}
+      <rect width="200" height="200" rx="44" fill={color} />
+
+      {/* Subtle inner highlight for depth */}
+      <rect
+        x="2" y="2" width="196" height="196" rx="43"
+        fill="none"
+        stroke="rgba(255,255,255,0.12)"
+        strokeWidth="1.5"
+      />
+
+      {/* R letter — left */}
       <path
-        d="M30 20h45c30 0 50 15 50 42s-20 42-50 42H65v76H30V20z
-           M65 82h10c12 0 20-6 20-20s-8-20-20-20H65v40z"
-        fill={color}
+        d="M42 42h38c22 0 36 12 36 32 0 15-9 25-24 30l26 54H88L66 106H64v52H42V42z
+           M64 88h16c10 0 16-6 16-14s-6-14-16-14H64v28z"
+        fill="white"
         fillRule="evenodd"
       />
-      {/* R letter — overlapping */}
+
+      {/* P letter — right, slightly offset for depth */}
       <path
-        d="M90 40h45c28 0 46 14 46 38 0 18-10 30-28 36l32 66h-38l-28-60h-4v60H90V40z
-           M125 100h10c12 0 18-6 18-18s-6-18-18-18h-10v36z"
-        fill={color}
+        d="M110 42h36c22 0 36 12 36 32s-14 32-36 32h-14v52h-22V42z
+           M132 88h14c10 0 16-6 16-14s-6-14-16-14h-14v28z"
+        fill="white"
         fillRule="evenodd"
-        opacity="0.85"
+        opacity="0.92"
       />
+
+      {/* Accent corner dot */}
+      <circle cx="174" cy="170" r="6" fill="rgba(255,255,255,0.25)" />
     </svg>
   );
 }

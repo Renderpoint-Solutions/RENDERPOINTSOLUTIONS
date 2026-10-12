@@ -1,335 +1,196 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-const projects = [
+const workProjects = [
   {
     id: 'kora',
-    name: 'KORA',
-    category: 'Digital Consulting Platform',
-    desc: 'A unified workspace for enterprise consulting — streamlining projects, clients, and insights.',
+    title: 'KORA Enterprise',
+    indianText: 'ഡിജിറ്റൽ പ്ലാറ്റ്‌ഫോം',
+    category: 'Digital Platform',
+    categoryTag: 'DETAILS 01',
+    desc: 'Unified workspace for enterprise consulting — streamlining client communications, projects, and AI insights.',
     year: '2025',
-    color: '#1a1a2e',
-    accent: '#00d4ff',
-    span: 'full',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop&auto=format',
+    color: 'bg-emerald-600',
+    borderColor: 'border-emerald-500',
+    bgColor: 'bg-emerald-50/80',
+    badge: '01 / 05',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&auto=format',
+    tags: ['React', 'Node.js', 'AI Agents'],
   },
   {
     id: 'nexus',
-    name: 'NEXUS',
-    category: 'AI Operations Platform',
-    desc: 'Intelligent infrastructure monitoring with real-time anomaly detection.',
+    title: 'NEXUS AI Ops',
+    indianText: 'കൃത്രിമബുദ്ധി പ്ലാറ്റ്‌ഫോം',
+    category: 'AI Platform',
+    categoryTag: 'DETAILS 02',
+    desc: 'Intelligent infrastructure monitoring with real-time automated anomaly detection and visual analytics.',
     year: '2025',
-    color: '#0d1117',
-    accent: '#7c3aed',
-    span: 'half',
-    img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=700&h=500&fit=crop&auto=format',
+    color: 'bg-blue-600',
+    borderColor: 'border-blue-500',
+    bgColor: 'bg-blue-50/80',
+    badge: '02 / 05',
+    img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&h=500&fit=crop&auto=format',
+    tags: ['Python', 'Vector DB', 'Next.js'],
   },
   {
     id: 'guardian',
-    name: 'GUARDIAN',
-    category: 'Cybersecurity Product',
-    desc: 'Enterprise threat intelligence with a zero-trust security architecture.',
+    title: 'GUARDIAN Threat Intelligence',
+    indianText: 'സൈബർ സുരക്ഷ',
+    category: 'Cybersecurity',
+    categoryTag: 'POSTERS 03',
+    desc: 'Zero-trust enterprise threat intelligence platform engineered for speed and high vulnerability visibility.',
     year: '2024',
-    color: '#0a0f08',
-    accent: '#22c55e',
-    span: 'half',
-    img: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=700&h=500&fit=crop&auto=format',
-  },
-  {
-    id: 'atlas',
-    name: 'ATLAS',
-    category: 'Data Intelligence Platform',
-    desc: 'Business intelligence reimagined — from raw data to strategic clarity.',
-    year: '2024',
-    color: '#12100e',
-    accent: '#f59e0b',
-    span: 'third',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=420&fit=crop&auto=format',
+    color: 'bg-orange-500',
+    borderColor: 'border-orange-500',
+    bgColor: 'bg-orange-50/80',
+    badge: '03 / 05',
+    img: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop&auto=format',
+    tags: ['Rust', 'GraphQL', 'Tailwind'],
   },
   {
     id: 'motion',
-    name: 'MOTION',
-    category: 'E-commerce Experience',
-    desc: 'A high-conversion storefront that turns browsing into buying.',
+    title: 'MOTION Storefront',
+    indianText: 'വാണിജ്യ വെബ്സൈറ്റ്',
+    category: 'E-commerce',
+    categoryTag: 'DETAILS 04',
+    desc: 'High-conversion interactive e-commerce store with instant cart synchronization and bespoke product 3D view.',
     year: '2024',
-    color: '#111',
-    accent: '#ec4899',
-    span: 'twothird',
-    img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&h=420&fit=crop&auto=format',
+    color: 'bg-amber-500',
+    borderColor: 'border-amber-500',
+    bgColor: 'bg-amber-50/80',
+    badge: '04 / 05',
+    img: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&h=500&fit=crop&auto=format',
+    tags: ['Shopify', 'Three.js', 'React'],
+  },
+  {
+    id: 'atlas',
+    title: 'ATLAS Analytics',
+    indianText: 'വിവരവിശകലനം',
+    category: 'Data Platform',
+    categoryTag: 'POSTERS 05',
+    desc: 'Business intelligence dashboard reimagined — transforming unstructured raw data into clear actionable strategy.',
+    year: '2024',
+    color: 'bg-purple-600',
+    borderColor: 'border-purple-500',
+    bgColor: 'bg-purple-50/80',
+    badge: '05 / 05',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&auto=format',
+    tags: ['Data Viz', 'D3.js', 'PostgreSQL'],
   },
 ];
 
+const categories = ['ALL (05)', 'DETAILS (03)', 'POSTERS (02)', 'AI & TECH (02)'];
+
 export default function SelectedWork() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [hovered, setHovered] = useState<string | null>(null);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.05 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
+  const [filter, setFilter] = useState('ALL (05)');
 
   return (
-    <section
-      id="work"
-      ref={ref}
-      style={{
-        padding: '120px 40px',
-        background: '#0d0d0d',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          marginBottom: '64px',
-          flexWrap: 'wrap',
-          gap: '24px',
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'opacity 0.7s, transform 0.7s',
-        }}>
+    <section id="work" className="relative py-28 px-4 md:px-8 bg-[#edf2f7] overflow-hidden">
+      {/* Outline Watermark Title */}
+      <div className="absolute top-10 left-0 right-0 overflow-hidden pointer-events-none select-none z-0">
+        <h2 className="text-outline-blue font-extrabold text-[14vw] leading-none tracking-tighter opacity-15 whitespace-nowrap font-display text-center">
+          #04 WORKS
+        </h2>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-slate-200 pb-8">
           <div>
-            <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px',
-              letterSpacing: '0.2em',
-              color: '#444',
-              textTransform: 'uppercase',
-              marginBottom: '20px',
-            }}>Our work</div>
-            <h2 style={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 800,
-              fontSize: 'clamp(34px, 5vw, 64px)',
-              letterSpacing: '-0.03em',
-              lineHeight: 1.05,
-              color: '#f0f0f0',
-              margin: 0,
-            }}>Selected work.</h2>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-700 mb-2">
+              <span className="bg-blue-600 text-white px-2 py-0.5 rounded font-mono">04 / 07</span>
+              <span>SELECTED PROJECTS</span>
+            </div>
+            <div className="indian-text text-3xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
+              <span>ഞങ്ങളുടെ പ്രോജക്ടുകൾ</span>
+              <span className="text-blue-600 font-sans text-2xl sm:text-4xl font-bold">/ OUR WORKS</span>
+            </div>
           </div>
-          <button
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              fontWeight: 500,
-              color: '#888',
-              background: 'none',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '100px',
-              padding: '10px 20px',
-              cursor: 'pointer',
-              letterSpacing: '0.01em',
-              transition: 'color 0.2s, border-color 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = '#f0f0f0';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.3)';
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = '#888';
-              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.1)';
-            }}
-          >
-            View all projects →
-          </button>
+
+          <p className="text-slate-600 text-sm sm:text-base max-w-md">
+            Filter the cabinet by folder. Explore digital products engineered for speed, aesthetics, and high user conversion.
+          </p>
         </div>
 
-        {/* Project grid */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-
-          {/* Row 1 — full width */}
-          {projects.filter(p => p.span === 'full').map((proj, i) => (
-            <ProjectCard
-              key={proj.id}
-              proj={proj}
-              visible={visible}
-              delay={i * 0.1}
-              hovered={hovered}
-              setHovered={setHovered}
-              height="420px"
-            />
+        {/* Filter Pills */}
+        <div className="flex flex-wrap gap-2 mb-10">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setFilter(cat)}
+              className={`px-4 py-2 text-xs font-mono font-bold rounded-full transition-all duration-200 ${
+                filter === cat
+                  ? 'bg-blue-600 text-white shadow-sm scale-105'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-600'
+              }`}
+            >
+              {cat}
+            </button>
           ))}
+        </div>
 
-          {/* Row 2 — two halves */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            {projects.filter(p => p.span === 'half').map((proj, i) => (
-              <ProjectCard
-                key={proj.id}
-                proj={proj}
-                visible={visible}
-                delay={0.2 + i * 0.1}
-                hovered={hovered}
-                setHovered={setHovered}
-                height="340px"
-              />
-            ))}
-          </div>
+        {/* Folder Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {workProjects.map((project) => (
+            <div
+              key={project.id}
+              className={`folder-card-wrapper rounded-3xl border-2 ${project.borderColor} ${project.bgColor} p-6 shadow-md transition-all duration-300 flex flex-col justify-between group`}
+            >
+              {/* Folder Handle */}
+              <div className={`folder-tab-top text-white ${project.color} shadow-sm mb-4`}>
+                <span>{project.categoryTag}</span>
+                <span className="bg-white/20 px-1.5 py-0.5 rounded font-mono text-[10px]">{project.year}</span>
+              </div>
 
-          {/* Row 3 — asymmetric 1/3 + 2/3 */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.7fr', gap: '16px' }}>
-            {projects.filter(p => p.span === 'third' || p.span === 'twothird').map((proj, i) => (
-              <ProjectCard
-                key={proj.id}
-                proj={proj}
-                visible={visible}
-                delay={0.3 + i * 0.1}
-                hovered={hovered}
-                setHovered={setHovered}
-                height="300px"
-              />
-            ))}
-          </div>
+              <div>
+                {/* Project Image Box */}
+                <div className="relative h-48 rounded-2xl overflow-hidden mb-5 border border-slate-200/80 shadow-sm">
+                  <img
+                    src={project.img}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-slate-800 shadow-sm">
+                    {project.badge}
+                  </div>
+                </div>
+
+                {/* Indian Language Title */}
+                <div className="indian-text text-lg font-extrabold text-slate-800 mb-1">
+                  {project.indianText}
+                </div>
+
+                {/* Main English Title */}
+                <h3 className="text-xl font-extrabold font-display text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                  {project.title}
+                </h3>
+
+                <p className="text-slate-600 text-xs sm:text-sm line-clamp-2 leading-relaxed mb-4">
+                  {project.desc}
+                </p>
+              </div>
+
+              {/* Tags and CTA */}
+              <div>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-white/90 text-slate-700 text-[10px] font-mono font-bold px-2.5 py-1 rounded-md border border-slate-200"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs font-mono font-bold text-blue-600">
+                  <span>EXPLORE CASE STUDY</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          #work .two-col, #work .asym-col { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
-  );
-}
-
-function ProjectCard({
-  proj, visible, delay, hovered, setHovered, height,
-}: {
-  proj: typeof projects[0];
-  visible: boolean;
-  delay: number;
-  hovered: string | null;
-  setHovered: (v: string | null) => void;
-  height: string;
-}) {
-  const isHov = hovered === proj.id;
-  const otherHov = hovered !== null && !isHov;
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(proj.id)}
-      onMouseLeave={() => setHovered(null)}
-      style={{
-        position: 'relative',
-        height,
-        borderRadius: '16px',
-        overflow: 'hidden',
-        cursor: 'pointer',
-        opacity: visible ? (otherHov ? 0.45 : 1) : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(40px)',
-        transition: `opacity 0.4s, transform 0.7s ${delay}s`,
-        background: proj.color,
-        border: '1px solid rgba(255,255,255,0.07)',
-      }}
-    >
-      {/* Background image */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `url(${proj.img})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        transform: isHov ? 'scale(1.04)' : 'scale(1)',
-        transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
-        filter: 'brightness(0.35)',
-      }} />
-
-      {/* Accent gradient overlay */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        background: `linear-gradient(135deg, ${proj.accent}18 0%, transparent 60%)`,
-        opacity: isHov ? 1 : 0.4,
-        transition: 'opacity 0.4s',
-      }} />
-
-      {/* Bottom gradient */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)',
-      }} />
-
-      {/* Content */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '28px 32px',
-      }}>
-        {/* Top row */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '10px',
-            color: proj.accent,
-            letterSpacing: '0.1em',
-            background: `${proj.accent}18`,
-            border: `1px solid ${proj.accent}40`,
-            borderRadius: '100px',
-            padding: '4px 10px',
-          }}>
-            {proj.category}
-          </span>
-          <span style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '10px',
-            color: 'rgba(255,255,255,0.3)',
-          }}>
-            {proj.year}
-          </span>
-        </div>
-
-        {/* Bottom content */}
-        <div>
-          <div style={{
-            fontFamily: 'Outfit, sans-serif',
-            fontWeight: 800,
-            fontSize: 'clamp(22px, 3vw, 38px)',
-            letterSpacing: '-0.03em',
-            color: isHov ? '#fff' : '#ddd',
-            marginBottom: '8px',
-            transition: 'color 0.3s',
-          }}>
-            {proj.name}
-          </div>
-          <div style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '13px',
-            color: 'rgba(255,255,255,0.45)',
-            lineHeight: 1.5,
-            maxWidth: '400px',
-            height: isHov ? '40px' : '0',
-            overflow: 'hidden',
-            transition: 'height 0.3s',
-            opacity: isHov ? 1 : 0,
-          }}>
-            {proj.desc}
-          </div>
-          <div style={{
-            marginTop: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            opacity: isHov ? 1 : 0,
-            transform: isHov ? 'translateX(0)' : 'translateX(-8px)',
-            transition: 'opacity 0.3s, transform 0.3s',
-          }}>
-            <span style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              fontWeight: 600,
-              color: proj.accent,
-            }}>
-              View project →
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -1,182 +1,112 @@
-import { useEffect, useRef, useState } from 'react';
-
-const categories = [
+const techCategories = [
   {
-    name: 'Design',
-    items: ['Figma', 'Framer', 'Adobe CC'],
+    category: 'Design & Prototyping',
+    indianText: 'ഡിസൈൻ ടൂളുകൾ',
+    color: 'bg-emerald-600',
+    borderColor: 'border-emerald-500',
+    bgColor: 'bg-emerald-50/80',
+    badge: '01 / DESIGN',
+    tools: ['Figma Systems', 'Framer', 'Adobe Creative Cloud', 'Spline 3D', 'Rive Animation'],
   },
   {
-    name: 'Frontend',
-    items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
+    category: 'Frontend Engineering',
+    indianText: 'ഫ്രണ്ട്എൻഡ് വികസനം',
+    color: 'bg-blue-600',
+    borderColor: 'border-blue-500',
+    bgColor: 'bg-blue-50/80',
+    badge: '02 / FRONTEND',
+    tools: ['React 19', 'Next.js 15', 'TypeScript', 'Tailwind CSS v4', 'Vite', 'GSAP Motion'],
   },
   {
-    name: 'Backend',
-    items: ['Node.js', 'Python', 'FastAPI', 'PostgreSQL'],
+    category: 'Backend & Cloud',
+    indianText: 'ബാക്കെൻഡ് & ക്ലൗഡ്',
+    color: 'bg-orange-500',
+    borderColor: 'border-orange-500',
+    bgColor: 'bg-orange-50/80',
+    badge: '03 / BACKEND',
+    tools: ['Node.js', 'Python FastAPI', 'PostgreSQL', 'Prisma ORM', 'Docker', 'AWS / Vercel'],
   },
   {
-    name: 'AI / ML',
-    items: ['PyTorch', 'OpenAI', 'Hugging Face', 'LangChain'],
-  },
-  {
-    name: 'Cloud',
-    items: ['AWS', 'Docker', 'GitHub', 'Vercel'],
+    category: 'AI & Machine Learning',
+    indianText: 'കൃത്രിമബുദ്ധി ടൂളുകൾ',
+    color: 'bg-purple-600',
+    borderColor: 'border-purple-500',
+    bgColor: 'bg-purple-50/80',
+    badge: '04 / AI & ML',
+    tools: ['OpenAI APIs', 'Claude 3.7', 'Vector DBs (Pinecone)', 'LangChain', 'PyTorch'],
   },
 ];
 
 export default function TechStack() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [activeHover, setActiveHover] = useState<string | null>(null);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-
   return (
-    <section
-      id="technology"
-      ref={ref}
-      style={{
-        position: 'relative',
-        padding: '120px 40px',
-        overflow: 'hidden',
-        borderTop: '1px solid rgba(27,94,32,0.06)',
-      }}
-    >
-      {/* Background image */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        backgroundImage: 'url(https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&h=1080&fit=crop&auto=format)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }} />
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'rgba(237,232,224,0.94)',
-      }} />
+    <section id="techstack" className="relative py-28 px-4 md:px-8 bg-[#edf2f7] overflow-hidden">
+      {/* Outline Watermark Title */}
+      <div className="absolute top-10 left-0 right-0 overflow-hidden pointer-events-none select-none z-0">
+        <h2 className="text-outline-blue font-extrabold text-[14vw] leading-none tracking-tighter opacity-15 whitespace-nowrap font-display text-center">
+          #06 TECH STACK
+        </h2>
+      </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '48px',
-          marginBottom: '80px',
-          alignItems: 'end',
-        }}>
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'opacity 0.7s, transform 0.7s',
-            }}
-          >
-            <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px',
-              letterSpacing: '0.2em',
-              color: '#9e9a8e',
-              textTransform: 'uppercase',
-              marginBottom: '20px',
-            }}>Our stack</div>
-            <h2 style={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 800,
-              fontSize: 'clamp(34px, 4.5vw, 60px)',
-              letterSpacing: '-0.03em',
-              lineHeight: 1.05,
-              color: '#1a1a1a',
-              margin: 0,
-            }}>
-              Built with the right<br />technology.
-            </h2>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-slate-200 pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-700 mb-2">
+              <span className="bg-blue-600 text-white px-2 py-0.5 rounded font-mono">06 / 07</span>
+              <span>OUR STACK</span>
+            </div>
+            <div className="indian-text text-3xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
+              <span>സാങ്കേതികവിദ്യ</span>
+              <span className="text-blue-600 font-sans text-2xl sm:text-4xl font-bold">/ TECH STACK</span>
+            </div>
           </div>
-          <p style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '16px',
-            lineHeight: 1.7,
-            color: '#6B6B60',
-            margin: 0,
-            opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'opacity 0.7s 0.15s, transform 0.7s 0.15s',
-          }}>
-            Modern tools, thoughtful architecture, and technology chosen around the problem — not the trend.
+
+          <p className="text-slate-600 text-sm sm:text-base max-w-md">
+            Modern tools, resilient architecture, and technologies chosen specifically for performance, scale, and longevity.
           </p>
         </div>
 
-        {/* Tech categories */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-          {categories.map(({ name, items }, ci) => (
+        {/* Tech Stack Folder Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {techCategories.map((cat) => (
             <div
-              key={name}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '160px 1fr',
-                gap: '40px',
-                alignItems: 'start',
-                padding: '32px 0',
-                borderTop: '1px solid rgba(27,94,32,0.08)',
-                opacity: visible ? 1 : 0,
-                transform: visible ? 'translateY(0)' : 'translateY(20px)',
-                transition: `opacity 0.6s ${ci * 0.1}s, transform 0.6s ${ci * 0.1}s`,
-              }}
+              key={cat.category}
+              className={`folder-card-wrapper rounded-3xl border-2 ${cat.borderColor} ${cat.bgColor} p-6 md:p-8 shadow-md transition-all duration-300 flex flex-col justify-between`}
             >
-              <div style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '11px',
-                letterSpacing: '0.12em',
-                color: '#9e9a8e',
-                textTransform: 'uppercase',
-                paddingTop: '6px',
-              }}>{name}</div>
+              {/* Top Handle */}
+              <div className={`folder-tab-top text-white ${cat.color} shadow-sm mb-4`}>
+                <span>{cat.badge}</span>
+              </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {items.map((tech) => {
-                  const isHov = activeHover === `${name}-${tech}`;
-                  return (
-                    <button
-                      key={tech}
-                      onMouseEnter={() => setActiveHover(`${name}-${tech}`)}
-                      onMouseLeave={() => setActiveHover(null)}
-                      style={{
-                        fontFamily: 'Inter, sans-serif',
-                        fontSize: '13px',
-                        fontWeight: 500,
-                        color: isHov ? '#F5F1EB' : '#6B6B60',
-                        background: isHov ? '#1B5E20' : 'rgba(27,94,32,0.05)',
-                        border: `1px solid ${isHov ? '#1B5E20' : 'rgba(27,94,32,0.12)'}`,
-                        borderRadius: '100px',
-                        padding: '8px 18px',
-                        cursor: 'default',
-                        transition: 'all 0.2s',
-                        letterSpacing: '0.01em',
-                      }}
+              <div>
+                <div className="indian-text text-xl font-extrabold text-slate-800 mb-1">
+                  {cat.indianText}
+                </div>
+
+                <h3 className="text-2xl font-extrabold font-display text-slate-900 mb-6">
+                  {cat.category}
+                </h3>
+
+                {/* Tool Pills */}
+                <div className="flex flex-wrap gap-2.5 mb-6">
+                  {cat.tools.map((tool) => (
+                    <span
+                      key={tool}
+                      className="bg-white text-slate-800 text-xs sm:text-sm font-mono font-bold px-4 py-2 rounded-xl border border-slate-200 shadow-sm hover:border-blue-400 hover:text-blue-600 transition-all"
                     >
-                      {tech}
-                    </button>
-                  );
-                })}
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-200/80 text-right">
+                <span className="font-mono text-xs font-bold text-slate-400">ENGINEERED FOR PRODUCTION</span>
               </div>
             </div>
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 768px) {
-          #technology .header-grid { grid-template-columns: 1fr !important; }
-          #technology .cat-row { grid-template-columns: 1fr !important; gap: 12px !important; }
-        }
-      `}</style>
     </section>
   );
 }

@@ -1,239 +1,171 @@
 import { useState, useEffect } from 'react';
 import PRLogo from './PRLogo';
 
-const links = ['Work', 'Services', 'Technology', 'About', 'Contact'];
+const navItems = [
+  { id: 'cover', label: 'COVER', num: '01' },
+  { id: 'services', label: 'SERVICES', num: '02' },
+  { id: 'about', label: 'ABOUT', num: '03' },
+  { id: 'work', label: 'WORK', num: '04' },
+  { id: 'process', label: 'PROCESS', num: '05' },
+  { id: 'techstack', label: 'TECH', num: '06' },
+  { id: 'contact', label: 'CONTACT', num: '07' },
+];
 
 export default function Navbar() {
+  const [activeTab, setActiveTab] = useState('cover');
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+
+      // Simple intersection check for active section
+      const sections = navItems.map((item) => document.getElementById(item.id));
+      const scrollPos = window.scrollY + 200;
+
+      sections.forEach((section) => {
+        if (section) {
+          const top = section.offsetTop;
+          const height = section.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveTab(section.id);
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollTo = (id: string) => {
+    setActiveTab(id);
     setMenuOpen(false);
-    const el = document.getElementById(id.toLowerCase());
-    el?.scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
+  const activeIndex = navItems.findIndex((item) => item.id === activeTab);
+  const activeNumber = activeIndex !== -1 ? navItems[activeIndex].num : '01';
+
   return (
-    <>
-      <nav
-        style={{
-          fontFamily: 'Inter, sans-serif',
-          position: 'fixed',
-          top: '20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 100,
-          width: 'calc(100% - 48px)',
-          maxWidth: '1200px',
-          background: scrolled ? 'rgba(245,241,235,0.92)' : 'rgba(245,241,235,0.7)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(27,94,32,0.08)',
-          borderRadius: '14px',
-          padding: '12px 20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          transition: 'background 0.3s',
-          boxShadow: scrolled ? '0 4px 30px rgba(27,94,32,0.06)' : 'none',
-        }}
-      >
-        {/* Logo */}
+    <header className="fixed top-0 left-0 right-0 z-50 pointer-events-none px-4 pt-3 pb-2 transition-all duration-300">
+      {/* Top Header Row */}
+      <div className="max-w-7xl mx-auto flex items-center justify-between pointer-events-auto">
+        {/* Left Logo Folder Tab Badge */}
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: 0,
-          }}
+          onClick={() => scrollTo('cover')}
+          className="group flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-b-2xl rounded-tr-2xl shadow-md transition-all duration-200"
         >
-          <PRLogo size={36} />
-          <span style={{
-            fontFamily: 'Outfit, sans-serif',
-            fontWeight: 700,
-            fontSize: '16px',
-            color: '#1B5E20',
-            letterSpacing: '-0.5px',
-          }}>RenderPoint</span>
+          <PRLogo size={24} color="#ffffff" />
+          <span className="font-extrabold text-lg tracking-tight font-display">
+            RENDERPOINT<span className="text-blue-200 font-normal text-xs ml-0.5">®</span>
+          </span>
         </button>
 
-        {/* Desktop links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }} className="nav-links-desktop">
-          {links.map((link) => (
-            <button
-              key={link}
-              onClick={() => scrollTo(link)}
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#6B6B60',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '6px 12px',
-                borderRadius: '8px',
-                letterSpacing: '0.01em',
-                transition: 'color 0.2s, background 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = '#1B5E20';
-                (e.target as HTMLElement).style.background = 'rgba(27,94,32,0.06)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = '#6B6B60';
-                (e.target as HTMLElement).style.background = 'none';
-              }}
-            >
-              {link}
-            </button>
-          ))}
+        {/* Center Floating Pill Navigation */}
+        <nav className="hidden md:flex items-center gap-1 bg-white/80 backdrop-blur-md border border-slate-200 shadow-lg px-3 py-1.5 rounded-full">
+          <span className="text-xs font-mono font-bold text-blue-600 px-2 border-r border-slate-200">
+            {activeNumber} <span className="text-slate-400 font-normal">/07</span>
+          </span>
+
+          {navItems.map((item) => {
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => scrollTo(item.id)}
+                className={`px-3 py-1 text-xs font-bold tracking-wide rounded-full transition-all duration-200 ${
+                  isActive
+                    ? 'bg-blue-600 text-white shadow-sm scale-105'
+                    : 'text-slate-600 hover:text-blue-600 hover:bg-slate-100'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
+
+          <button
+            title="Toggle Theme"
+            className="ml-1 p-1.5 text-slate-500 hover:text-amber-500 hover:bg-amber-50 rounded-full transition-colors"
+          >
+            ☀️
+          </button>
+        </nav>
+
+        {/* Right Indian Language Typography Bar */}
+        <div className="hidden lg:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-full border border-slate-200 shadow-sm indian-text">
+          <span className="text-blue-600 font-bold">രൂപകൽപ്പന</span>
+          <span className="text-slate-300">|</span>
+          <span className="text-emerald-600 font-bold">தொழில்நுட்பம்</span>
+          <span className="text-slate-300">|</span>
+          <span className="text-amber-600 font-bold">उत्कृष्टता</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* CTA */}
-          <button
-            onClick={() => scrollTo('Contact')}
-            className="nav-cta"
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              fontWeight: 600,
-              color: '#F5F1EB',
-              background: '#1B5E20',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '8px 16px',
-              cursor: 'pointer',
-              letterSpacing: '0.01em',
-              transition: 'background 0.2s, transform 0.15s',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.background = '#2E7D32';
-              (e.target as HTMLElement).style.transform = 'scale(1.02)';
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.background = '#1B5E20';
-              (e.target as HTMLElement).style.transform = 'scale(1)';
-            }}
-          >
-            Start a project
-          </button>
-
-          {/* Mobile hamburger */}
-          <button
-            className="nav-hamburger"
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              color: '#1a1a1a',
-              flexDirection: 'column',
-              gap: '4px',
-            }}
-            aria-label="Menu"
-          >
-            <span style={{ display: 'block', width: '20px', height: '1.5px', background: '#1a1a1a', transition: 'transform 0.2s', transform: menuOpen ? 'rotate(45deg) translateY(5.5px)' : 'none' }} />
-            <span style={{ display: 'block', width: '20px', height: '1.5px', background: '#1a1a1a', opacity: menuOpen ? 0 : 1, transition: 'opacity 0.2s' }} />
-            <span style={{ display: 'block', width: '20px', height: '1.5px', background: '#1a1a1a', transition: 'transform 0.2s', transform: menuOpen ? 'rotate(-45deg) translateY(-5.5px)' : 'none' }} />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '80px',
-            left: '24px',
-            right: '24px',
-            zIndex: 99,
-            background: 'rgba(245,241,235,0.97)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(27,94,32,0.08)',
-            borderRadius: '14px',
-            padding: '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '4px',
-            boxShadow: '0 8px 40px rgba(27,94,32,0.08)',
-          }}
-          className="mobile-menu"
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden bg-white text-slate-800 p-2.5 rounded-xl border border-slate-200 shadow-sm"
+          aria-label="Toggle menu"
         >
-          {links.map((link) => (
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {menuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Top Status Bar Strip (Sub-header) */}
+      <div className="max-w-7xl mx-auto mt-2 pointer-events-auto">
+        <div className="bg-emerald-600 text-white text-[11px] font-mono uppercase font-bold tracking-wider px-4 py-1.5 rounded-full shadow-sm flex items-center justify-between overflow-x-auto whitespace-nowrap">
+          <div className="flex items-center gap-4">
+            <span className="bg-emerald-700/60 px-2 py-0.5 rounded">2025–2026</span>
+            <span>VISUAL & DIGITAL STUDIO</span>
+            <span className="hidden sm:inline text-emerald-200">·</span>
+            <span className="hidden sm:inline">RENDERPOINT SOLUTIONS</span>
+            <span className="hidden md:inline text-emerald-200">·</span>
+            <span className="hidden md:inline">CREATIVE EXPERIENCE</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="bg-emerald-500/80 text-white px-2 py-0.5 rounded font-mono">
+              {activeTab.toUpperCase()} PAGE
+            </span>
+            <span>{activeNumber} / 07</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {menuOpen && (
+        <div className="md:hidden mt-2 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl p-4 pointer-events-auto flex flex-col gap-2">
+          {navItems.map((item) => (
             <button
-              key={link}
-              onClick={() => scrollTo(link)}
-              style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '15px',
-                fontWeight: 500,
-                color: '#6B6B60',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                textAlign: 'left',
-                letterSpacing: '0.01em',
-                transition: 'color 0.2s, background 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                (e.target as HTMLElement).style.color = '#1B5E20';
-                (e.target as HTMLElement).style.background = 'rgba(27,94,32,0.06)';
-              }}
-              onMouseLeave={(e) => {
-                (e.target as HTMLElement).style.color = '#6B6B60';
-                (e.target as HTMLElement).style.background = 'none';
-              }}
+              key={item.id}
+              onClick={() => scrollTo(item.id)}
+              className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold ${
+                activeTab === item.id ? 'bg-blue-600 text-white' : 'text-slate-700 hover:bg-slate-100'
+              }`}
             >
-              {link}
+              <span>{item.label}</span>
+              <span className="font-mono text-xs opacity-75">{item.num}</span>
             </button>
           ))}
-          <button
-            onClick={() => scrollTo('Contact')}
-            style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: '#F5F1EB',
-              background: '#1B5E20',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '12px 16px',
-              cursor: 'pointer',
-              marginTop: '8px',
-              transition: 'background 0.2s',
-            }}
-          >
-            Start a project
-          </button>
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold px-2 indian-text">
+            <span>രൂപകൽപ്പന</span>
+            <span>•</span>
+            <span>தொழில்நுட்பம்</span>
+            <span>•</span>
+            <span>उत्कृष्टता</span>
+          </div>
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .nav-links-desktop { display: none !important; }
-          .nav-hamburger { display: flex !important; }
-          .nav-cta { display: none !important; }
-        }
-      `}</style>
-    </>
+    </header>
   );
 }

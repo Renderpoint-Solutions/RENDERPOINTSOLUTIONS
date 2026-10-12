@@ -1,24 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
-const budgets = ['< $10k', '$10k – $25k', '$25k – $50k', '$50k – $100k', '$100k+'];
-const projectTypes = ['Web Design', 'Web Development', 'Product Design', 'Mobile App', 'Branding', 'AI / ML', 'Strategy', 'Other'];
+const projectTypes = ['Web Design', 'Full-Stack Web App', 'Mobile App', 'AI Solution', 'Design System', 'Branding'];
+const budgetRanges = ['< $10k', '$10k – $25k', '$25k – $50k', '$50k+'];
 
 export default function Contact() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [form, setForm] = useState({
-    name: '', email: '', company: '', type: '', budget: '', message: '',
-  });
+  const [selectedType, setSelectedType] = useState('Full-Stack Web App');
+  const [selectedBudget, setSelectedBudget] = useState('$10k – $25k');
   const [submitted, setSubmitted] = useState(false);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,414 +14,193 @@ export default function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      ref={ref}
-      style={{
-        position: 'relative',
-        padding: '120px 40px',
-        background: '#080808',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Ambient background blobs */}
-      <div style={{
-        position: 'absolute',
-        top: '-20%', left: '-10%',
-        width: '500px', height: '500px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(0,212,255,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '-20%', right: '-5%',
-        width: '400px', height: '400px',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none',
-      }} />
+    <section id="contact" className="relative py-28 px-4 md:px-8 bg-[#edf2f7] overflow-hidden">
+      {/* Outline Watermark Title */}
+      <div className="absolute top-10 left-0 right-0 overflow-hidden pointer-events-none select-none z-0">
+        <h2 className="text-outline-blue font-extrabold text-[14vw] leading-none tracking-tighter opacity-15 whitespace-nowrap font-display text-center">
+          #07 CONTACT
+        </h2>
+      </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1.2fr',
-          gap: '80px',
-          alignItems: 'start',
-        }}>
-          {/* Left — CTA copy */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateX(0)' : 'translateX(-30px)',
-              transition: 'opacity 0.8s, transform 0.8s',
-            }}
-          >
-            <div style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px',
-              letterSpacing: '0.2em',
-              color: '#444',
-              textTransform: 'uppercase',
-              marginBottom: '24px',
-            }}>Let's talk</div>
-
-            <div style={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 300,
-              fontSize: 'clamp(28px, 3vw, 42px)',
-              letterSpacing: '-0.02em',
-              color: '#666',
-              lineHeight: 1.2,
-              marginBottom: '8px',
-            }}>Have an idea?</div>
-            <div style={{
-              fontFamily: 'Outfit, sans-serif',
-              fontWeight: 900,
-              fontSize: 'clamp(36px, 5vw, 64px)',
-              letterSpacing: '-0.04em',
-              lineHeight: 1.0,
-              color: '#f0f0f0',
-              marginBottom: '32px',
-            }}>
-              Let's bring it<br />
-              <span style={{ color: '#00d4ff' }}>to digital life.</span>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-slate-200 pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-blue-700 mb-2">
+              <span className="bg-blue-600 text-white px-2 py-0.5 rounded font-mono">07 / 07</span>
+              <span>GET IN TOUCH</span>
             </div>
+            <div className="indian-text text-3xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
+              <span>ബന്ധപ്പെടുക</span>
+              <span className="text-blue-600 font-sans text-2xl sm:text-4xl font-bold">/ START A PROJECT</span>
+            </div>
+          </div>
 
-            <p style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '15px',
-              lineHeight: 1.7,
-              color: '#555',
-              marginBottom: '48px',
-              maxWidth: '380px',
-            }}>
-              Tell us what you're building, what you're trying to solve, or simply where you want to go.
-            </p>
+          <p className="text-slate-600 text-sm sm:text-base max-w-md">
+            Have an ambitious digital product idea? Let’s turn it into reality. Reach out today and receive a detailed project timeline.
+          </p>
+        </div>
 
-            {/* Contact details */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <div>
-                <div style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '10px',
-                  letterSpacing: '0.12em',
-                  color: '#444',
-                  marginBottom: '4px',
-                }}>EMAIL</div>
-                <a
-                  href="mailto:hello@yourstudio.com"
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: '#f0f0f0',
-                    textDecoration: 'none',
-                    transition: 'color 0.2s',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#00d4ff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#f0f0f0')}
-                >
-                  hello@yourstudio.com
-                </a>
+        {/* Contact Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Direct Info Card */}
+          <div className="lg:col-span-5 flex flex-col gap-6">
+            <div className="folder-card-wrapper rounded-3xl border-2 border-amber-500 bg-white p-8 shadow-md">
+              <div className="folder-tab-top bg-amber-500 text-white shadow-sm mb-6">
+                <span>DIRECT INQUIRIES</span>
               </div>
 
-              <div>
-                <div style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '10px',
-                  letterSpacing: '0.12em',
-                  color: '#444',
-                  marginBottom: '10px',
-                }}>SOCIAL</div>
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                  {['LinkedIn', 'Instagram', 'GitHub', 'Behance', 'Dribbble'].map((s) => (
-                    <a
-                      key={s}
-                      href="#"
-                      style={{
-                        fontFamily: 'Inter, sans-serif',
-                        fontSize: '12px',
-                        fontWeight: 500,
-                        color: '#555',
-                        background: 'rgba(255,255,255,0.04)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        borderRadius: '100px',
-                        padding: '6px 14px',
-                        textDecoration: 'none',
-                        transition: 'color 0.2s, border-color 0.2s, background 0.2s',
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = '#f0f0f0';
-                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.2)';
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)';
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.color = '#555';
-                        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-                        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
-                      }}
-                    >
-                      {s}
-                    </a>
-                  ))}
+              <div className="indian-text text-2xl font-extrabold text-slate-900 mb-2">
+                നമുക്ക് സംസാരിക്കാം! (Let's Talk)
+              </div>
+
+              <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                Directly connect with our strategy & engineering leads for consultations, project estimates, or partnership inquiries.
+              </p>
+
+              <div className="space-y-4 pt-4 border-t border-slate-100">
+                <div>
+                  <div className="text-[11px] font-mono font-bold text-slate-400 uppercase">EMAIL US</div>
+                  <a
+                    href="mailto:hello@renderpoint.com"
+                    className="text-lg font-bold font-display text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    hello@renderpoint.com
+                  </a>
+                </div>
+
+                <div>
+                  <div className="text-[11px] font-mono font-bold text-slate-400 uppercase">LOCATION</div>
+                  <div className="text-sm font-semibold text-slate-800">
+                    Kochi & Bengaluru, India (Global Remote)
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[11px] font-mono font-bold text-slate-400 uppercase mb-2">CONNECT</div>
+                  <div className="flex flex-wrap gap-2 text-xs font-mono font-bold text-slate-700">
+                    <span className="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">LinkedIn</span>
+                    <span className="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">GitHub</span>
+                    <span className="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">Twitter / X</span>
+                    <span className="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">Dribbble</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right — form */}
-          <div
-            style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateX(0)' : 'translateX(30px)',
-              transition: 'opacity 0.8s 0.2s, transform 0.8s 0.2s',
-            }}
-          >
-            {submitted ? (
-              <div style={{
-                background: 'rgba(0,212,255,0.08)',
-                border: '1px solid rgba(0,212,255,0.2)',
-                borderRadius: '16px',
-                padding: '60px 40px',
-                textAlign: 'center',
-              }}>
-                <div style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '32px',
-                  marginBottom: '16px',
-                }}>✓</div>
-                <div style={{
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 700,
-                  fontSize: '24px',
-                  letterSpacing: '-0.02em',
-                  color: '#f0f0f0',
-                  marginBottom: '12px',
-                }}>We've got your message.</div>
-                <div style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '14px',
-                  color: '#555',
-                }}>
-                  We'll review your project and get back to you within 1–2 business days.
-                </div>
+          {/* Right Column: Contact Folder Form */}
+          <div className="lg:col-span-7">
+            <div className="folder-card-wrapper rounded-3xl border-2 border-blue-600 bg-white p-8 md:p-10 shadow-xl">
+              <div className="folder-tab-top bg-blue-600 text-white shadow-sm mb-6">
+                <span>PROJECT INQUIRY FORM</span>
+                <span className="bg-white/20 px-2 py-0.5 rounded font-mono">ESTIMATE</span>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {/* Row 1 */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <FormField
-                    label="Name"
-                    value={form.name}
-                    onChange={(v) => setForm({ ...form, name: v })}
-                    placeholder="Your name"
-                  />
-                  <FormField
-                    label="Email"
-                    type="email"
-                    value={form.email}
-                    onChange={(v) => setForm({ ...form, email: v })}
-                    placeholder="you@company.com"
-                    required
-                  />
-                </div>
 
-                <FormField
-                  label="Company"
-                  value={form.company}
-                  onChange={(v) => setForm({ ...form, company: v })}
-                  placeholder="Your company or project name"
-                />
-
-                {/* Project type pills */}
-                <div>
-                  <div style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '10px',
-                    letterSpacing: '0.1em',
-                    color: '#444',
-                    textTransform: 'uppercase',
-                    marginBottom: '10px',
-                  }}>Project type</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {projectTypes.map((t) => (
-                      <button
-                        type="button"
-                        key={t}
-                        onClick={() => setForm({ ...form, type: form.type === t ? '' : t })}
-                        style={{
-                          fontFamily: 'Inter, sans-serif',
-                          fontSize: '12px',
-                          fontWeight: 500,
-                          color: form.type === t ? '#0d0d0d' : '#666',
-                          background: form.type === t ? '#00d4ff' : 'rgba(255,255,255,0.04)',
-                          border: `1px solid ${form.type === t ? '#00d4ff' : 'rgba(255,255,255,0.08)'}`,
-                          borderRadius: '100px',
-                          padding: '7px 14px',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {t}
-                      </button>
-                    ))}
+              {submitted ? (
+                <div className="py-12 text-center">
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-4">
+                    ✓
                   </div>
-                </div>
-
-                {/* Budget */}
-                <div>
-                  <div style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '10px',
-                    letterSpacing: '0.1em',
-                    color: '#444',
-                    textTransform: 'uppercase',
-                    marginBottom: '10px',
-                  }}>Budget range</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {budgets.map((b) => (
-                      <button
-                        type="button"
-                        key={b}
-                        onClick={() => setForm({ ...form, budget: form.budget === b ? '' : b })}
-                        style={{
-                          fontFamily: 'JetBrains Mono, monospace',
-                          fontSize: '11px',
-                          color: form.budget === b ? '#0d0d0d' : '#555',
-                          background: form.budget === b ? '#00d4ff' : 'rgba(255,255,255,0.04)',
-                          border: `1px solid ${form.budget === b ? '#00d4ff' : 'rgba(255,255,255,0.08)'}`,
-                          borderRadius: '100px',
-                          padding: '7px 14px',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                        }}
-                      >
-                        {b}
-                      </button>
-                    ))}
+                  <h3 className="text-2xl font-extrabold font-display text-slate-900 mb-2">
+                    Inquiry Received!
+                  </h3>
+                  <div className="indian-text text-lg text-emerald-700 font-bold mb-3">
+                    നന്ദി! ഞങ്ങൾ ഉടൻ ബന്ധപ്പെടും.
                   </div>
+                  <p className="text-slate-600 text-sm max-w-sm mx-auto">
+                    Thank you for reaching out to RenderPoint Solutions. Our team will review your project and get back to you within 24 hours.
+                  </p>
                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Name & Email */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">YOUR NAME *</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Rahul Sharma"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-blue-600 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">WORK EMAIL *</label>
+                      <input
+                        type="email"
+                        required
+                        placeholder="rahul@company.com"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-blue-600 transition-colors"
+                      />
+                    </div>
+                  </div>
 
-                {/* Message */}
-                <div>
-                  <div style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '10px',
-                    letterSpacing: '0.1em',
-                    color: '#444',
-                    textTransform: 'uppercase',
-                    marginBottom: '8px',
-                  }}>Tell us about your project</div>
-                  <textarea
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="Describe your idea, goals, timeline, or anything relevant..."
-                    rows={4}
-                    style={{
-                      width: '100%',
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '14px',
-                      color: '#f0f0f0',
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      borderRadius: '10px',
-                      padding: '14px 16px',
-                      resize: 'vertical',
-                      outline: 'none',
-                      transition: 'border-color 0.2s',
-                      lineHeight: 1.6,
-                    }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(0,212,255,0.4)')}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)')}
-                  />
-                </div>
+                  {/* Project Type */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">PROJECT TYPE</label>
+                    <div className="flex flex-wrap gap-2">
+                      {projectTypes.map((type) => (
+                        <button
+                          type="button"
+                          key={type}
+                          onClick={() => setSelectedType(type)}
+                          className={`px-3.5 py-1.5 text-xs font-mono font-bold rounded-xl transition-all ${
+                            selectedType === type
+                              ? 'bg-blue-600 text-white shadow-sm'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-                <button
-                  type="submit"
-                  style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    color: '#0d0d0d',
-                    background: '#f0f0f0',
-                    border: 'none',
-                    borderRadius: '10px',
-                    padding: '16px 28px',
-                    cursor: 'pointer',
-                    letterSpacing: '0.01em',
-                    transition: 'background 0.2s, transform 0.15s',
-                    alignSelf: 'flex-start',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = '#00d4ff';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = '#f0f0f0';
-                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                  }}
-                >
-                  Start the conversation →
-                </button>
-              </form>
-            )}
+                  {/* Budget */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">ESTIMATED BUDGET</label>
+                    <div className="flex flex-wrap gap-2">
+                      {budgetRanges.map((b) => (
+                        <button
+                          type="button"
+                          key={b}
+                          onClick={() => setSelectedBudget(b)}
+                          className={`px-3.5 py-1.5 text-xs font-mono font-bold rounded-xl transition-all ${
+                            selectedBudget === b
+                              ? 'bg-emerald-600 text-white shadow-sm'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          }`}
+                        >
+                          {b}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Details */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold text-slate-600 uppercase mb-2">PROJECT DETAILS</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Tell us about your product goals, timeline, and key features..."
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 focus:outline-none focus:border-blue-600 transition-colors"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold font-display text-sm py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Send Project Inquiry</span>
+                    <span>→</span>
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 900px) {
-          #contact .contact-grid { grid-template-columns: 1fr !important; gap: 60px !important; }
-          #contact .form-row { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </section>
-  );
-}
-
-function FormField({
-  label, value, onChange, placeholder, type = 'text', required = false,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  type?: string;
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <div style={{
-        fontFamily: 'JetBrains Mono, monospace',
-        fontSize: '10px',
-        letterSpacing: '0.1em',
-        color: '#444',
-        textTransform: 'uppercase',
-        marginBottom: '8px',
-      }}>{label}</div>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        required={required}
-        style={{
-          width: '100%',
-          fontFamily: 'Inter, sans-serif',
-          fontSize: '14px',
-          color: '#f0f0f0',
-          background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: '10px',
-          padding: '13px 16px',
-          outline: 'none',
-          transition: 'border-color 0.2s',
-        }}
-        onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(0,212,255,0.4)')}
-        onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)')}
-      />
-    </div>
   );
 }

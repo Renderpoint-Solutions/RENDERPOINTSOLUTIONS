@@ -1,191 +1,120 @@
-import { useEffect, useRef, useState } from 'react';
-
-const steps = [
+const processSteps = [
   {
     num: '01',
-    title: 'Discover',
-    desc: 'Understand the problem, users and business. We immerse in your world before writing a single line.',
+    title: 'Discover & Research',
+    indianText: 'കണ്ടെത്തൽ',
+    desc: 'Deep user research, stakeholder alignment, market mapping, and setting high-impact KPIs.',
+    color: 'bg-emerald-600',
+    borderColor: 'border-emerald-500',
+    bgColor: 'bg-emerald-50/80',
+    badge: 'STEP 01',
   },
   {
     num: '02',
-    title: 'Define',
-    desc: 'Turn the idea into a clear product strategy. A precise north star so every decision points somewhere.',
+    title: 'Define & Strategy',
+    indianText: 'നിർവ്വചനം',
+    desc: 'Translating insights into clear product requirements, technical architecture, and interactive sitemaps.',
+    color: 'bg-blue-600',
+    borderColor: 'border-blue-500',
+    bgColor: 'bg-blue-50/80',
+    badge: 'STEP 02',
   },
   {
     num: '03',
-    title: 'Design',
-    desc: 'Create the experience, interface and visual system. Beautiful, functional, and rooted in real user needs.',
+    title: 'Design & Prototype',
+    indianText: 'രൂപകൽപ്പന',
+    desc: 'Crafting pixel-perfect design systems, interactive prototypes, micro-animations, and visual polish.',
+    color: 'bg-orange-500',
+    borderColor: 'border-orange-500',
+    bgColor: 'bg-orange-50/80',
+    badge: 'STEP 03',
   },
   {
     num: '04',
-    title: 'Build',
-    desc: 'Develop the product using modern technology. Clean code, scalable architecture, and no shortcuts.',
+    title: 'Engineering & Build',
+    indianText: 'നിർമ്മാണം',
+    desc: 'Full-stack development with clean modular architecture, automated testing, and sub-second load times.',
+    color: 'bg-amber-500',
+    borderColor: 'border-amber-500',
+    bgColor: 'bg-amber-50/80',
+    badge: 'STEP 04',
   },
   {
     num: '05',
-    title: 'Launch',
-    desc: 'Ship, measure and continuously improve. The work continues long after the first release.',
+    title: 'Launch & Evolution',
+    indianText: 'പ്രകാശനം',
+    desc: 'Production deployment, real-time analytics monitoring, feedback loops, and ongoing iterations.',
+    color: 'bg-purple-600',
+    borderColor: 'border-purple-500',
+    bgColor: 'bg-purple-50/80',
+    badge: 'STEP 05',
   },
 ];
 
 export default function Process() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const [activeStep, setActiveStep] = useState<string | null>(null);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-
   return (
-    <section
-      style={{
-        padding: '120px 40px',
-        background: '#0a0a0a',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-      }}
-      ref={ref}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{
-          textAlign: 'center',
-          marginBottom: '80px',
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'opacity 0.7s, transform 0.7s',
-        }}>
-          <div style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px',
-            letterSpacing: '0.2em',
-            color: '#444',
-            textTransform: 'uppercase',
-            marginBottom: '20px',
-          }}>Our process</div>
-          <h2 style={{
-            fontFamily: 'Outfit, sans-serif',
-            fontWeight: 800,
-            fontSize: 'clamp(34px, 5vw, 60px)',
-            letterSpacing: '-0.03em',
-            lineHeight: 1.05,
-            color: '#f0f0f0',
-            margin: '0 auto',
-            maxWidth: '600px',
-          }}>
-            How we bring ideas to life.
-          </h2>
-        </div>
-
-        {/* Steps — horizontal on desktop, vertical on mobile */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '0',
-          position: 'relative',
-        }}>
-          {/* Connecting line */}
-          <div style={{
-            position: 'absolute',
-            top: '32px',
-            left: '10%',
-            right: '10%',
-            height: '1px',
-            background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08) 10%, rgba(255,255,255,0.08) 90%, transparent)',
-            zIndex: 0,
-          }}>
-            {/* Animated fill */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to right, #00d4ff, #7c3aed)',
-              transformOrigin: 'left',
-              transform: `scaleX(${visible ? 1 : 0})`,
-              transition: 'transform 1.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.3s',
-              opacity: 0.5,
-            }} />
-          </div>
-
-          {steps.map(({ num, title, desc }, i) => {
-            const isActive = activeStep === num;
-            return (
-              <div
-                key={num}
-                onMouseEnter={() => setActiveStep(num)}
-                onMouseLeave={() => setActiveStep(null)}
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  padding: '0 20px',
-                  paddingTop: '0',
-                  opacity: visible ? 1 : 0,
-                  transform: visible ? 'translateY(0)' : 'translateY(24px)',
-                  transition: `opacity 0.6s ${i * 0.12}s, transform 0.6s ${i * 0.12}s`,
-                  cursor: 'default',
-                }}
-              >
-                {/* Node */}
-                <div style={{
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '50%',
-                  border: `1px solid ${isActive ? '#00d4ff' : 'rgba(255,255,255,0.1)'}`,
-                  background: isActive ? 'rgba(0,212,255,0.1)' : 'rgba(255,255,255,0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '28px',
-                  transition: 'border-color 0.3s, background 0.3s',
-                }}>
-                  <span style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: isActive ? '#00d4ff' : '#444',
-                    transition: 'color 0.3s',
-                  }}>{num}</span>
-                </div>
-
-                <div style={{
-                  fontFamily: 'Outfit, sans-serif',
-                  fontWeight: 700,
-                  fontSize: '20px',
-                  letterSpacing: '-0.02em',
-                  color: isActive ? '#f0f0f0' : '#888',
-                  marginBottom: '10px',
-                  transition: 'color 0.3s',
-                }}>
-                  {title}
-                </div>
-                <div style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '13px',
-                  lineHeight: 1.65,
-                  color: '#444',
-                  maxWidth: '180px',
-                }}>
-                  {desc}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+    <section id="process" className="relative py-28 px-4 md:px-8 bg-[#edf2f7] overflow-hidden">
+      {/* Outline Watermark Title */}
+      <div className="absolute top-10 left-0 right-0 overflow-hidden pointer-events-none select-none z-0">
+        <h2 className="text-outline-green font-extrabold text-[14vw] leading-none tracking-tighter opacity-15 whitespace-nowrap font-display text-center">
+          #05 PROCESS
+        </h2>
       </div>
 
-      <style>{`
-        @media (max-width: 900px) {
-          .process-grid {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-          .process-line { display: none !important; }
-        }
-      `}</style>
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-slate-200 pb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-emerald-700 mb-2">
+              <span className="bg-emerald-600 text-white px-2 py-0.5 rounded font-mono">05 / 07</span>
+              <span>HOW WE WORK</span>
+            </div>
+            <div className="indian-text text-3xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
+              <span>പ്രവർത്തന ശൈലി</span>
+              <span className="text-emerald-600 font-sans text-2xl sm:text-4xl font-bold">/ OUR PROCESS</span>
+            </div>
+          </div>
+
+          <p className="text-slate-600 text-sm sm:text-base max-w-md">
+            A battle-tested 5-step methodology that turns complex product ideas into high-performing, market-ready digital experiences.
+          </p>
+        </div>
+
+        {/* Horizontal Process Folder Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          {processSteps.map((step) => (
+            <div
+              key={step.num}
+              className={`folder-card-wrapper rounded-2xl border-2 ${step.borderColor} ${step.bgColor} p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between`}
+            >
+              {/* Folder Top Tab Handle */}
+              <div className={`folder-tab-top text-white ${step.color} shadow-sm mb-4`}>
+                <span>{step.badge}</span>
+                <span className="bg-white/20 px-1.5 py-0.5 rounded font-mono text-[10px]">{step.num}</span>
+              </div>
+
+              <div>
+                {/* Indian Script Step Title */}
+                <div className="indian-text text-xl font-extrabold text-slate-800 mb-1">
+                  {step.indianText}
+                </div>
+
+                <h3 className="font-extrabold font-display text-slate-900 text-base mb-2">
+                  {step.title}
+                </h3>
+
+                <p className="text-slate-600 text-xs leading-relaxed mb-6">
+                  {step.desc}
+                </p>
+              </div>
+
+              <div className="pt-3 border-t border-slate-200/60 text-right">
+                <span className="font-mono text-[11px] font-bold text-slate-400">STAGE {step.num} / 05</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
